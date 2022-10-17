@@ -1,8 +1,8 @@
-import 'dart:ffi';
-
 import 'package:isar/isar.dart';
 
 import 'review.dart';
+
+part 'meditation_record.g.dart';
 
 @collection
 class MeditationRecord {
