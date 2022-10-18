@@ -5,6 +5,7 @@ import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:simple_meditation_memo/data/meditation_record.dart';
 import 'package:simple_meditation_memo/repository/meditation_record_repository.dart';
+import 'package:simple_meditation_memo/ui/countdown_timer.dart';
 import 'package:simple_meditation_memo/ui/meditation_record_list.dart';
 
 late Isar isar;
@@ -56,14 +57,14 @@ class MyHomePage extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('title'),
       ),
-      body: const MeditationRecordList(),
+      body: const CountdownTimer(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           ref.watch(meditationRecordRepositoryProvider).add();
         },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 }
