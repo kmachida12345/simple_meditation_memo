@@ -1,11 +1,20 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:simple_meditation_memo/ui_state/timer_state.dart';
 
-final timerProvider = StreamProvider.family<String, Duration>(
+final timerProvider = StreamProvider.autoDispose.family<int, Duration>(
   (ref, arg) {
-    const oneSec = Duration(seconds: 1);
     return Stream.periodic(
-      oneSec,
-      (computationCount) => Duration(seconds: (arg.inSeconds - computationCount)).toString(),
-    );
+      const Duration(seconds: 1),
+      (computationCount) {
+        if (arg.inSeconds - computationCount == 0) {
+          ref.watch(timerStateProvider.notifier).state = TimerState.finished;
+        }
+        return arg.inSeconds - computationCount;
+      },
+    ).take(arg.inSeconds + 1);
   },
 );
+
+final timerStateProvider = StateProvider<TimerState>((ref) {
+  return TimerState.initialized;
+});
