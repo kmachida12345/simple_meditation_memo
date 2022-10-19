@@ -59,7 +59,7 @@ class RemainingTimeStateNotifier extends StateNotifier<timer_model.Timer> {
   void cancel() {
     _sub.cancel();
     state = const timer_model.Timer(
-        timeRemaining: 0, timerState: TimerState.canceled);
+        timeRemaining: 0, timerState: TimerState.idle);
   }
 }
 

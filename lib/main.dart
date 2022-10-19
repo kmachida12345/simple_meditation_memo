@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:isar/isar.dart';
@@ -65,8 +66,10 @@ class MyHomePage extends ConsumerWidget {
           BottomNavigationBarItem(icon: Icon(Icons.timer), label: 'timer'),
         ],
         currentIndex: ref.watch(_bottomNavPosProvider),
-        onTap: (value) =>
-            ref.read(_bottomNavPosProvider.notifier).state = value,
+        onTap: (value) {
+          FlutterRingtonePlayer.stop();
+          ref.read(_bottomNavPosProvider.notifier).state = value;
+        }
       ),
     );
   }

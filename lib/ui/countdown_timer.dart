@@ -35,8 +35,6 @@ class TimerScreen extends ConsumerWidget {
         return Column(
           children: const [RemainingTimerText(), StartedButton()],
         );
-      case TimerState.canceled:
-        return const Text('canceled');
       case TimerState.finished:
         FlutterRingtonePlayer.playAlarm(asAlarm: true, volume: 0.2);
         ref
@@ -94,7 +92,9 @@ class InitialButton extends ConsumerWidget {
             children: [
               IconButton(
                 onPressed: () {
-                  ref.read(timerProvider.notifier).start(ref.read(durationProvider));
+                  ref
+                      .read(timerProvider.notifier)
+                      .start(ref.read(durationProvider));
 
                   ref.read(recordProvider).startedAt = DateTime.now();
                   ref.read(recordProvider).duration =
@@ -110,12 +110,17 @@ class InitialButton extends ConsumerWidget {
   }
 }
 
-class Finished extends StatelessWidget {
+class Finished extends ConsumerWidget {
   const Finished({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const Text('finished!');
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ElevatedButton(
+        onPressed: () {
+          FlutterRingtonePlayer.stop();
+          ref.read(timerProvider.notifier).cancel();
+        },
+        child: const Text('Finish!'));
   }
 }
 
