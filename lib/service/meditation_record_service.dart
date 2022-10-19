@@ -14,12 +14,7 @@ class MeditationRecordService {
 
   final Isar isar;
 
-  Future<int> add({required Review? review, String? comment}) async {
-    final record = MeditationRecord()
-      ..review = review
-      ..comment = comment
-      ..startedAt = DateTime.now()
-      ..endAt = DateTime.now();
+  Future<int> add({required MeditationRecord record}) async {
     return isar.writeTxn(() => isar.meditationRecords.put(record));
   }
 

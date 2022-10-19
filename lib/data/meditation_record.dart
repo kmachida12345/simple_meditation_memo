@@ -8,8 +8,8 @@ part 'meditation_record.g.dart';
 class MeditationRecord {
   Id id = Isar.autoIncrement;
   late DateTime startedAt;
-  late DateTime endAt;
+  late int duration;
   String? comment;
   Review? review;
-}
 
+}

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:simple_meditation_memo/data/meditation_record.dart';
 import 'package:simple_meditation_memo/repository/meditation_record_repository.dart';
 import 'package:simple_meditation_memo/service/timer_service.dart';
 import 'package:simple_meditation_memo/ui_state/timer_state.dart';
@@ -16,6 +17,8 @@ class CountdownTimer extends ConsumerWidget {
     );
   }
 }
+
+final recordProvider = Provider((ref) => MeditationRecord());
 
 class TimerScreen extends ConsumerWidget {
   const TimerScreen({super.key});
@@ -35,7 +38,9 @@ class TimerScreen extends ConsumerWidget {
       case TimerState.canceled:
         return const Text('canceled');
       case TimerState.finished:
-        ref.watch(meditationRecordRepositoryProvider).add();
+        ref.read(meditationRecordRepositoryProvider).add(
+          ref.watch(recordProvider)
+        );
         return const Finished();
       case TimerState.paused:
         return Column(
@@ -84,6 +89,10 @@ class InitialButton extends ConsumerWidget {
         IconButton(
           onPressed: () {
             ref.read(timerProvider.notifier).start(4);
+
+            ref.read(recordProvider).startedAt = DateTime.now();
+            ref.read(recordProvider).duration = ref.read(timerProvider).timeRemaining;
+
           },
           icon: const Icon(Icons.start),
         ),

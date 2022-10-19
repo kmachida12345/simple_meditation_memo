@@ -16,9 +16,10 @@ class RemainingTimeStateNotifier extends StateNotifier<timer_model.Timer> {
   Stream<int> _generateTimer({required int timeInSec}) {
     return Stream.periodic(
       const Duration(seconds: 1),
-          (computationCount) => timeInSec - computationCount - 1,
+      (computationCount) => timeInSec - computationCount - 1,
     ).take(timeInSec);
   }
+
   late StreamSubscription<int> _sub;
 
   @override
@@ -29,34 +30,39 @@ class RemainingTimeStateNotifier extends StateNotifier<timer_model.Timer> {
 
   void start(int timeInSecond) {
     _sub = _generateTimer(timeInSec: timeInSecond).listen((duration) {
-      state = timer_model.Timer(timeRemaining: duration, timerState: TimerState.started);
+      state = timer_model.Timer(
+          timeRemaining: duration, timerState: TimerState.started);
     });
 
     _sub.onDone(() {
-      state = timer_model.Timer(timeRemaining: state.timeRemaining, timerState: TimerState.finished);
+      state = timer_model.Timer(
+          timeRemaining: state.timeRemaining, timerState: TimerState.finished);
     });
 
-    state = timer_model.Timer(timeRemaining: timeInSecond, timerState: TimerState.started);
+    state = timer_model.Timer(
+        timeRemaining: timeInSecond, timerState: TimerState.started);
   }
 
   void pause() {
     _sub.pause();
-    state = timer_model.Timer(timeRemaining: state.timeRemaining, timerState: TimerState.paused);
+    state = timer_model.Timer(
+        timeRemaining: state.timeRemaining, timerState: TimerState.paused);
   }
 
   void resume() {
     _sub.resume();
-    state = timer_model.Timer(timeRemaining: state.timeRemaining, timerState: TimerState.started);
+    state = timer_model.Timer(
+        timeRemaining: state.timeRemaining, timerState: TimerState.started);
   }
 
   void cancel() {
     _sub.cancel();
-    state = const timer_model.Timer(timeRemaining: 0, timerState: TimerState.canceled);
+    state = const timer_model.Timer(
+        timeRemaining: 0, timerState: TimerState.canceled);
   }
 }
 
-final timerProvider = StateNotifierProvider.autoDispose
-    <RemainingTimeStateNotifier, timer_model.Timer>(
-        (ref) {
+final timerProvider =
+    StateNotifierProvider<RemainingTimeStateNotifier, timer_model.Timer>((ref) {
   return RemainingTimeStateNotifier();
 });

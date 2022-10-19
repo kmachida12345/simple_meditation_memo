@@ -22,10 +22,10 @@ const MeditationRecordSchema = CollectionSchema(
       name: r'comment',
       type: IsarType.string,
     ),
-    r'endAt': PropertySchema(
+    r'duration': PropertySchema(
       id: 1,
-      name: r'endAt',
-      type: IsarType.dateTime,
+      name: r'duration',
+      type: IsarType.long,
     ),
     r'review': PropertySchema(
       id: 2,
@@ -82,7 +82,7 @@ void _meditationRecordSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeString(offsets[0], object.comment);
-  writer.writeDateTime(offsets[1], object.endAt);
+  writer.writeLong(offsets[1], object.duration);
   writer.writeObject<Review>(
     offsets[2],
     allOffsets,
@@ -100,7 +100,7 @@ MeditationRecord _meditationRecordDeserialize(
 ) {
   final object = MeditationRecord();
   object.comment = reader.readStringOrNull(offsets[0]);
-  object.endAt = reader.readDateTime(offsets[1]);
+  object.duration = reader.readLong(offsets[1]);
   object.id = id;
   object.review = reader.readObjectOrNull<Review>(
     offsets[2],
@@ -121,7 +121,7 @@ P _meditationRecordDeserializeProp<P>(
     case 0:
       return (reader.readStringOrNull(offset)) as P;
     case 1:
-      return (reader.readDateTime(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 2:
       return (reader.readObjectOrNull<Review>(
         offset,
@@ -384,53 +384,53 @@ extension MeditationRecordQueryFilter
   }
 
   QueryBuilder<MeditationRecord, MeditationRecord, QAfterFilterCondition>
-      endAtEqualTo(DateTime value) {
+      durationEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'endAt',
+        property: r'duration',
         value: value,
       ));
     });
   }
 
   QueryBuilder<MeditationRecord, MeditationRecord, QAfterFilterCondition>
-      endAtGreaterThan(
-    DateTime value, {
+      durationGreaterThan(
+    int value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'endAt',
+        property: r'duration',
         value: value,
       ));
     });
   }
 
   QueryBuilder<MeditationRecord, MeditationRecord, QAfterFilterCondition>
-      endAtLessThan(
-    DateTime value, {
+      durationLessThan(
+    int value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'endAt',
+        property: r'duration',
         value: value,
       ));
     });
   }
 
   QueryBuilder<MeditationRecord, MeditationRecord, QAfterFilterCondition>
-      endAtBetween(
-    DateTime lower,
-    DateTime upper, {
+      durationBetween(
+    int lower,
+    int upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'endAt',
+        property: r'duration',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -599,16 +599,17 @@ extension MeditationRecordQuerySortBy
     });
   }
 
-  QueryBuilder<MeditationRecord, MeditationRecord, QAfterSortBy> sortByEndAt() {
+  QueryBuilder<MeditationRecord, MeditationRecord, QAfterSortBy>
+      sortByDuration() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'endAt', Sort.asc);
+      return query.addSortBy(r'duration', Sort.asc);
     });
   }
 
   QueryBuilder<MeditationRecord, MeditationRecord, QAfterSortBy>
-      sortByEndAtDesc() {
+      sortByDurationDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'endAt', Sort.desc);
+      return query.addSortBy(r'duration', Sort.desc);
     });
   }
 
@@ -643,16 +644,17 @@ extension MeditationRecordQuerySortThenBy
     });
   }
 
-  QueryBuilder<MeditationRecord, MeditationRecord, QAfterSortBy> thenByEndAt() {
+  QueryBuilder<MeditationRecord, MeditationRecord, QAfterSortBy>
+      thenByDuration() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'endAt', Sort.asc);
+      return query.addSortBy(r'duration', Sort.asc);
     });
   }
 
   QueryBuilder<MeditationRecord, MeditationRecord, QAfterSortBy>
-      thenByEndAtDesc() {
+      thenByDurationDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'endAt', Sort.desc);
+      return query.addSortBy(r'duration', Sort.desc);
     });
   }
 
@@ -694,9 +696,9 @@ extension MeditationRecordQueryWhereDistinct
   }
 
   QueryBuilder<MeditationRecord, MeditationRecord, QDistinct>
-      distinctByEndAt() {
+      distinctByDuration() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'endAt');
+      return query.addDistinctBy(r'duration');
     });
   }
 
@@ -722,9 +724,9 @@ extension MeditationRecordQueryProperty
     });
   }
 
-  QueryBuilder<MeditationRecord, DateTime, QQueryOperations> endAtProperty() {
+  QueryBuilder<MeditationRecord, int, QQueryOperations> durationProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'endAt');
+      return query.addPropertyName(r'duration');
     });
   }
 

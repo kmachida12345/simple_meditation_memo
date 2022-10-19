@@ -90,7 +90,6 @@ class HomeContents extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return list[ref.watch(_bottomNavPosProvider)];
   }
-
 }
 
 final _bottomNavPosProvider = StateProvider((ref) => 0);

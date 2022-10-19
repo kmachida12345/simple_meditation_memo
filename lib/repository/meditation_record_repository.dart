@@ -17,7 +17,7 @@ class MeditationRecordRepository {
     return await service.getAll();
   }
 
-  Future<void> add() async {
-    await service.add(review: Review(), comment: '');
+  Future<void> add(MeditationRecord record) async {
+    await service.add(record: record);
   }
 }

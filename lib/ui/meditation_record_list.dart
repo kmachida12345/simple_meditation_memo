@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:simple_meditation_memo/data/meditation_record.dart';
 import 'package:simple_meditation_memo/repository/meditation_record_repository.dart';
 
 class MeditationRecordList extends ConsumerWidget {
@@ -20,7 +21,7 @@ class MeditationRecordList extends ConsumerWidget {
 
         return Scaffold(
           body: Column(
-            children: snapshot.data!.map((e) => Text(e?.id.toString() ?? '')).toList(),
+            children: snapshot.data!.map((e) => Text(e?.toString() ?? '')).toList(),
           ),
         );
       }
