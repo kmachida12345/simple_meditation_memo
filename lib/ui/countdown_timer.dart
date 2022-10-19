@@ -1,5 +1,6 @@
 import 'package:duration_picker/duration_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:simple_meditation_memo/data/meditation_record.dart';
 import 'package:simple_meditation_memo/repository/meditation_record_repository.dart';
@@ -37,9 +38,10 @@ class TimerScreen extends ConsumerWidget {
       case TimerState.canceled:
         return const Text('canceled');
       case TimerState.finished:
+        FlutterRingtonePlayer.playAlarm(asAlarm: true, volume: 0.2);
         ref
             .read(meditationRecordRepositoryProvider)
-            .add(ref.watch(recordProvider));
+            .add(ref.read(recordProvider));
         return const Finished();
       case TimerState.paused:
         return Column(

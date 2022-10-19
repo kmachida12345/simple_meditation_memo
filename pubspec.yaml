@@ -20,6 +20,7 @@ dependencies:
   flutter_riverpod: ^2.0.2
   riverpod_annotation: ^1.0.4
   duration_picker: ^1.0.1
+  flutter_ringtone_player: ^3.2.0
 
 dev_dependencies:
   flutter_test:
