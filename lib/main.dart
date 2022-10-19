@@ -6,7 +6,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:simple_meditation_memo/data/meditation_record.dart';
 import 'package:simple_meditation_memo/service/timer_service.dart';
 import 'package:simple_meditation_memo/ui/countdown_timer.dart';
-import 'package:simple_meditation_memo/ui_state/timer_state.dart';
+import 'package:simple_meditation_memo/ui/meditation_record_list.dart';
 
 late Isar isar;
 
@@ -57,7 +57,7 @@ class MyHomePage extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('title'),
       ),
-      body: const CountdownTimer(),
+      body: const HomeContents(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           ref.read(timerProvider.notifier).start(10);
@@ -65,6 +65,32 @@ class MyHomePage extends ConsumerWidget {
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.man), label: 'list'),
+          BottomNavigationBarItem(icon: Icon(Icons.timer), label: 'timer'),
+        ],
+        currentIndex: ref.watch(_bottomNavPosProvider),
+        onTap: (value) =>
+            ref.read(_bottomNavPosProvider.notifier).state = value,
+      ),
     );
   }
 }
+
+class HomeContents extends ConsumerWidget {
+  const HomeContents({super.key});
+
+  static const list = [
+    MeditationRecordList(),
+    CountdownTimer()
+  ];
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return list[ref.watch(_bottomNavPosProvider)];
+  }
+
+}
+
+final _bottomNavPosProvider = StateProvider((ref) => 0);

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:simple_meditation_memo/repository/meditation_record_repository.dart';
 import 'package:simple_meditation_memo/service/timer_service.dart';
 import 'package:simple_meditation_memo/ui_state/timer_state.dart';
 
@@ -34,6 +35,7 @@ class TimerScreen extends ConsumerWidget {
       case TimerState.canceled:
         return const Text('canceled');
       case TimerState.finished:
+        ref.watch(meditationRecordRepositoryProvider).add();
         return const Finished();
       case TimerState.paused:
         return Column(
