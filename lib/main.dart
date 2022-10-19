@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:simple_meditation_memo/data/meditation_record.dart';
-import 'package:simple_meditation_memo/service/timer_service.dart';
 import 'package:simple_meditation_memo/ui/countdown_timer.dart';
 import 'package:simple_meditation_memo/ui/meditation_record_list.dart';
 
@@ -13,6 +13,7 @@ late Isar isar;
 void main() {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  initializeDateFormatting();
   runApp(const ProviderScope(child: MyApp()));
 }
 
