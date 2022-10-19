@@ -1,6 +1,7 @@
 enum TimerState {
-  initialized,
+  idle,
   started,
   canceled,
   finished,
+  paused,
 }

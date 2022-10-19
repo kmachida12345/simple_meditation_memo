@@ -60,7 +60,7 @@ class MyHomePage extends ConsumerWidget {
       body: const CountdownTimer(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          ref.read(timerStateProvider.notifier).state = TimerState.started;
+          ref.read(timerProvider.notifier).start(10);
         },
         tooltip: 'Increment',
         child: const Icon(Icons.add),

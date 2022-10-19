@@ -8,25 +8,127 @@ class CountdownTimer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(
-        child: (() {
-          switch(ref.watch(timerStateProvider)) {
-            case TimerState.initialized:
-              return const Text('init');
-            case TimerState.started:
-              return ref.watch(timerProvider(const Duration(seconds: 5))).when(
-                data: (data) => Text(Duration(seconds: data).toString()),
-                error: (error, stackTrace) => const Text('err'),
-                loading: () => const CircularProgressIndicator(),
-              );
-            case TimerState.canceled:
-              return const Text('canceled');
-            case TimerState.finished:
-              return const Text('finished!');
-          }
-        })(),
+        child: TimerScreen(),
       ),
+    );
+  }
+}
+
+class TimerScreen extends ConsumerWidget {
+  const TimerScreen({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    switch (ref.watch(timerProvider).timerState) {
+      case TimerState.idle:
+        return const InitialButton();
+      case TimerState.started:
+        return Column(
+          children: const [
+            RemainingTimerText(),
+            StartedButton()
+          ],
+        );
+      case TimerState.canceled:
+        return const Text('canceled');
+      case TimerState.finished:
+        return const Finished();
+      case TimerState.paused:
+        return Column(
+          children: const [
+            RemainingTimerText(),
+            PausedButton()
+          ],
+        );
+    }
+  }
+}
+
+class StartedButton extends ConsumerWidget {
+  const StartedButton({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        IconButton(
+          onPressed: () {
+            ref.read(timerProvider.notifier).cancel();
+          },
+          icon: const Icon(Icons.stop),
+        ),
+        IconButton(
+          onPressed: () {
+            ref.read(timerProvider.notifier).pause();
+          },
+          icon: const Icon(Icons.pause),
+        ),
+      ],
+    );
+  }
+}
+
+class InitialButton extends ConsumerWidget {
+  const InitialButton({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        IconButton(
+          onPressed: () {
+            ref.read(timerProvider.notifier).start(4);
+          },
+          icon: const Icon(Icons.start),
+        ),
+      ],
+    );
+  }
+}
+
+class Finished extends StatelessWidget {
+  const Finished({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text('finished!');
+  }
+}
+
+class RemainingTimerText extends ConsumerWidget {
+  const RemainingTimerText({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Text(ref.watch(timerProvider).timeRemaining.toString());
+  }
+}
+
+class PausedButton extends ConsumerWidget {
+  const PausedButton({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        IconButton(
+          onPressed: () {
+            ref.read(timerProvider.notifier).cancel();
+          },
+          icon: const Icon(Icons.stop),
+        ),
+        IconButton(
+          onPressed: () {
+            ref.read(timerProvider.notifier).resume();
+          },
+          icon: const Icon(Icons.restart_alt),
+        ),
+      ],
     );
   }
 }
