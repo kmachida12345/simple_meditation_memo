@@ -58,13 +58,6 @@ class MyHomePage extends ConsumerWidget {
         title: const Text('title'),
       ),
       body: const HomeContents(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          ref.read(timerProvider.notifier).start(10);
-        },
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.man), label: 'list'),

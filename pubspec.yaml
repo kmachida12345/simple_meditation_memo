@@ -19,6 +19,7 @@ dependencies:
   flutter_native_splash: ^2.2.11
   flutter_riverpod: ^2.0.2
   riverpod_annotation: ^1.0.4
+  duration_picker: ^1.0.1
 
 dev_dependencies:
   flutter_test:

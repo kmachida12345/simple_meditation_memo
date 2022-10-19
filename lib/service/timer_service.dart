@@ -28,7 +28,8 @@ class RemainingTimeStateNotifier extends StateNotifier<timer_model.Timer> {
     super.dispose();
   }
 
-  void start(int timeInSecond) {
+  void start(Duration duration) {
+    var timeInSecond = duration.inSeconds;
     _sub = _generateTimer(timeInSec: timeInSecond).listen((duration) {
       state = timer_model.Timer(
           timeRemaining: duration, timerState: TimerState.started);

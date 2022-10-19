@@ -1,3 +1,4 @@
+import 'package:duration_picker/duration_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:simple_meditation_memo/data/meditation_record.dart';
@@ -19,6 +20,7 @@ class CountdownTimer extends ConsumerWidget {
 }
 
 final recordProvider = Provider((ref) => MeditationRecord());
+final durationProvider = StateProvider((ref) => const Duration());
 
 class TimerScreen extends ConsumerWidget {
   const TimerScreen({super.key});
@@ -30,24 +32,18 @@ class TimerScreen extends ConsumerWidget {
         return const InitialButton();
       case TimerState.started:
         return Column(
-          children: const [
-            RemainingTimerText(),
-            StartedButton()
-          ],
+          children: const [RemainingTimerText(), StartedButton()],
         );
       case TimerState.canceled:
         return const Text('canceled');
       case TimerState.finished:
-        ref.read(meditationRecordRepositoryProvider).add(
-          ref.watch(recordProvider)
-        );
+        ref
+            .read(meditationRecordRepositoryProvider)
+            .add(ref.watch(recordProvider));
         return const Finished();
       case TimerState.paused:
         return Column(
-          children: const [
-            RemainingTimerText(),
-            PausedButton()
-          ],
+          children: const [RemainingTimerText(), PausedButton()],
         );
     }
   }
@@ -83,20 +79,31 @@ class InitialButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        IconButton(
-          onPressed: () {
-            ref.read(timerProvider.notifier).start(4);
+    return Center(
+      child: Column(
+        children: [
+          DurationPicker(
+            duration: ref.watch(durationProvider),
+            onChange: (value) =>
+                ref.read(durationProvider.notifier).state = value,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              IconButton(
+                onPressed: () {
+                  ref.read(timerProvider.notifier).start(ref.read(durationProvider));
 
-            ref.read(recordProvider).startedAt = DateTime.now();
-            ref.read(recordProvider).duration = ref.read(timerProvider).timeRemaining;
-
-          },
-          icon: const Icon(Icons.start),
-        ),
-      ],
+                  ref.read(recordProvider).startedAt = DateTime.now();
+                  ref.read(recordProvider).duration =
+                      ref.read(timerProvider).timeRemaining;
+                },
+                icon: const Icon(Icons.start),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
